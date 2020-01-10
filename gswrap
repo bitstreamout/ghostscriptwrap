@@ -73,7 +73,7 @@ do
 	;;
     -sOutputFile=*)
 	case "${arg#-sOutputFile=}" in
-	%stdout%|%stderr%|-|"")
+	%stdout%|%stderr%|%stdout|%stderr|-|"")
 	    continue ;;
 	%pipe%*)
 	    pipecmd=${arg#-sOutputFile=%pipe%}
