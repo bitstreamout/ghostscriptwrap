@@ -104,8 +104,6 @@ do
 		trap "finish '$PWD' '$tmp'" ERR EXIT SIGINT SIGHUP
 		opts[o++]="--bind ${tmp+"$tmp"} $home/out"
 	    fi
-	    # change to new working directory in sandbox
-	    opts[o++]="--chdir $home/out"
 	fi
 	argv[argc]="-sOutputFile=$home/out/${file}"
 	continue
@@ -129,6 +127,8 @@ do
     then
 	opts[o++]="--ro-bind $arg $home/$arg"
     else
+	arg="$(realpath $arg)" || exit 1
+	argv[argc]="$arg"
 	test "$arg" != / || continue
 	test "$arg" != /home || continue
 	test "$arg" != $home || continue
