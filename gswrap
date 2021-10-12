@@ -25,7 +25,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 #
 
-ghostscript==@@GS@@
+ghostscript=@@GS@@
 
 user=nobody
 home=/home/$user
@@ -36,7 +36,7 @@ lock=$(mktemp "${TMPDIR:-/tmp}/.gswrap-XXXXXXXXXX") || exit 1
 unlock ()
 {
     test -e $lock || return
-    fuser -KILL $lock
+    fuser -TERM $lock
     rm -f $lock
 }
 
