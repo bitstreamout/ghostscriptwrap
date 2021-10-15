@@ -35,16 +35,16 @@ do
 done
 
 user=nobody
-home=/home/$user
-uid=$(id -u $user)
-gid=$(id -g $user)
+home="/home/$user"
+uid=$(id -u "$user")
+gid=$(id -g "$user")
 lock=$(mktemp "${TMPDIR:-/tmp}/.gswrap-XXXXXXXXXX") || exit 1
 
 unlock ()
 {
-    test -e $lock || return
-    fuser -TERM $lock
-    rm -f $lock
+    test -e "$lock" || return
+    fuser -TERM "$loc"
+    rm -f "$lock"
 }
 
 finish ()
@@ -103,7 +103,7 @@ do
 	    exit 1
 	else
 	    unset argv[c]
-	    argv[c+1]=-sOutputFile=${argv[c+1]}
+	    argv[c+1]=-sOutputFile="${argv[c+1]}"
 	fi
 	;;
     -sOutputFile=*)
@@ -111,7 +111,7 @@ do
 	%stdout%|%stderr%|%stdout|%stderr|-|"")
 	    continue ;;
 	%pipe%*)
-	    pipecmd=${arg#-sOutputFile=%pipe%}
+	    pipecmd="${arg#-sOutputFile=%pipe%}"
 	    let pipepos=c
 	    ;;
 	esac
@@ -192,9 +192,9 @@ then
 fi
 if test -n "$pipecmd"
 then
-    mkfifo -m 666 ${tmp}/fd
-    fd=${tmp}/fd
-    exec $pipecmd < $fd &
+    mkfifo -m 666 "${tmp}/fd"
+    fd="${tmp}/fd"
+    exec "$pipecmd" < $fd &
     argv[pipepos]="-sOutputFile=$home/fifo"
     opts[o++]=--bind
     opts[o++]="$fd"
@@ -333,7 +333,7 @@ set -euo pipefail
       --ro-bind /usr/share/ghostscript /usr/share/ghostscript \
       --ro-bind /usr/share/fonts /usr/share/fonts \
       --ro-bind /etc/fonts /etc/fonts \
-      --ro-bind $lock /tmp/.lock \
+      --ro-bind "$lock" /tmp/.lock \
       --lock-file /tmp/.lock \
       --dir "/run/user/$uid" \
       --dir /var \
@@ -355,4 +355,4 @@ set -euo pipefail
       --setenv MAIL /dev/null \
       --die-with-parent \
       /usr/bin/gs ${1+"$@"})
-rm -f $lock
+rm -f "$lock"
